@@ -3,6 +3,23 @@ const {GraphQLList} = require("graphql");
 
 const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID } = graphql;
 
+const directorsJson = [
+    {"name": "Quentin Tarantino", "age": 55}, // 653297fd41b807f5b0691370
+    {"name": "Michael Radford", "age": 72}, // 65329e4f41b807f5b0691373
+    {"name": "James McTeigue", "age": 51}, // 65329ed141b807f5b0691374
+    {"name": "Guy Ritchie", "age": 50}, // 65329f2f41b807f5b0691375
+]
+
+const moviesJson = [
+    {"name": "Pulp Fiction", "genre": "crime", "directorId": "653297fd41b807f5b0691370"},
+    {"name": "1986", "genre": "crime", "directorId": "65329e4f41b807f5b0691373"},
+    {"name": "Snatch", "genre": "comedy", "directorId": "65329ed141b807f5b0691374"},
+    {"name": "Reservoir Dogs", "genre": "crime-comedy", "directorId": "65329f2f41b807f5b0691375"},
+    {"name": "The Hateful Eight", "genre": "crime", "directorId": "653297fd41b807f5b0691370"},
+    {"name": "Inglourious Basterds", "genre": "crime", "directorId": "653297fd41b807f5b0691370"},
+    {"name": "Lock, Stock Two Smoking Barrels", "genre": "crime-comedy", "directorId": "65329f2f41b807f5b0691375"},
+]
+
 const movies = [
     {id: '1', name: "Pulp Fiction", genre: "crime", directorId: '1'},
     {id: '2', name: "1986", genre: "crime", directorId: '2'},
@@ -20,7 +37,7 @@ const directors = [
     {id: "3", name: "James McTeigue", age: 51},
     {id: "4", name: "Guy Ritchie", age: 50},
 ]
-// описываем схему хронящихся в базе
+// описываем схему фильмов хронящихся в базе
 const MovieType = new GraphQLObjectType({
     name: 'Movie',
     fields: () => ({
@@ -30,7 +47,7 @@ const MovieType = new GraphQLObjectType({
         director: {
             type: DirectorType,
             resolve(parent, args) {
-                return directors.find(director => director.id === args.id);
+                //return directors.find(director => director.id === args.id);
             }
         }
     })
@@ -45,7 +62,7 @@ const DirectorType = new GraphQLObjectType({
         movies: {
             type: new GraphQLList(MovieType),
             resolve(parent) {
-                return movies.filter(movie => movie.directorId === parent.id)
+                //return movies.filter(movie => movie.directorId === parent.id)
             }
         }
     })
