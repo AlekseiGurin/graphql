@@ -2,6 +2,9 @@ const  graphql = require('graphql');
 const {GraphQLList} = require("graphql");
 
 const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID } = graphql;
+//экземпляры монгус схемы
+const Movies = require('../models/movies');
+const Directors = require('../models/directors');
 
 const directorsJson = [
     {"name": "Quentin Tarantino", "age": 55}, // 653297fd41b807f5b0691370
@@ -48,6 +51,7 @@ const MovieType = new GraphQLObjectType({
             type: DirectorType,
             resolve(parent, args) {
                 //return directors.find(director => director.id === args.id);
+                return Directors.findById(parent.directorId)
             }
         }
     })
@@ -63,6 +67,7 @@ const DirectorType = new GraphQLObjectType({
             type: new GraphQLList(MovieType),
             resolve(parent) {
                 //return movies.filter(movie => movie.directorId === parent.id)
+                return Movies.find({ directorId: parent.id })
             }
         }
     })
@@ -79,26 +84,30 @@ const Query = new GraphQLObjectType({
         args: { id: { type: GraphQLID }},
         // resolve - метод для манипуляции базой данных
         resolve(parent, args) {
-            return movies.find(movie => args.id === movie.id);
+            //return movies.find(movie => args.id === movie.id);
+            return Movies.findById(args.id)
         },
       },
         director: {
             type: DirectorType,
             args: { id: { type: GraphQLID }},
         resolve(parent, args) {
-            return directors.find(director => args.id === director.id);
+            //return directors.find(director => args.id === director.id);
+            return Directors.findById(args.id)
         },
       },
         movies: {
             type: new GraphQLList(MovieType),
             resolve() {
-                return movies;
+                //return movies;
+                return Movies.find({})
             }
         },
         directors: {
             type: new GraphQLList(DirectorType),
             resolve() {
-                return directors;
+                ///return directors;
+                return Movies.find({})
             }
         }
     }
