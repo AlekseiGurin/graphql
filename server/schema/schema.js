@@ -23,23 +23,23 @@ const moviesJson = [
     {"name": "Lock, Stock Two Smoking Barrels", "genre": "crime-comedy", "directorId": "65329f2f41b807f5b0691375"},
 ]
 
-const movies = [
-    {id: '1', name: "Pulp Fiction", genre: "crime", directorId: '1'},
-    {id: '2', name: "1986", genre: "crime", directorId: '2'},
-    {id: 3, name: "v for vendetta", genre: "triller", directorId: '3'},
-    {id: 4, name: "Snatch", genre: "comedy", directorId: '4'},
-    {id: 5, name: "Reservoir Dogs", genre: "crime-comedy", directorId: '1'},
-    {id: 6, name: "The Hateful Eight", genre: "crime", directorId: '1'},
-    {id: 7, name: "Inglourious Basterds", genre: "crime", directorId: '1'},
-    {id: 7, name: "Lock, Stock Two Smoking Barrels", genre: "crime-comedy", directorId: '4'},
-]
+// const movies = [
+//     {id: '1', name: "Pulp Fiction", genre: "crime", directorId: '1'},
+//     {id: '2', name: "1986", genre: "crime", directorId: '2'},
+//     {id: 3, name: "v for vendetta", genre: "triller", directorId: '3'},
+//     {id: 4, name: "Snatch", genre: "comedy", directorId: '4'},
+//     {id: 5, name: "Reservoir Dogs", genre: "crime-comedy", directorId: '1'},
+//     {id: 6, name: "The Hateful Eight", genre: "crime", directorId: '1'},
+//     {id: 7, name: "Inglourious Basterds", genre: "crime", directorId: '1'},
+//     {id: 7, name: "Lock, Stock Two Smoking Barrels", genre: "crime-comedy", directorId: '4'},
+// ]
 
-const directors = [
-    {id: "1", name: "Quentin Tarantino", age: 55},
-    {id: "2", name: "Michael Radford", age: 72},
-    {id: "3", name: "James McTeigue", age: 51},
-    {id: "4", name: "Guy Ritchie", age: 50},
-]
+// const directors = [
+//     {id: "1", name: "Quentin Tarantino", age: 55},
+//     {id: "2", name: "Michael Radford", age: 72},
+//     {id: "3", name: "James McTeigue", age: 51},
+//     {id: "4", name: "Guy Ritchie", age: 50},
+// ]
 // описываем схему фильмов хронящихся в базе
 const MovieType = new GraphQLObjectType({
     name: 'Movie',
@@ -73,7 +73,6 @@ const DirectorType = new GraphQLObjectType({
     })
 });
 
-
 // создаем и описываем корневой запрос
 const Query = new GraphQLObjectType({
     name: 'Query',
@@ -100,6 +99,7 @@ const Query = new GraphQLObjectType({
             type: new GraphQLList(MovieType),
             resolve() {
                 //return movies;
+                console.log("")
                 return Movies.find({})
             }
         },
