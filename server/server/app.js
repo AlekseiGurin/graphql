@@ -12,8 +12,7 @@ mongoose.connect(mongoConnectionString, {useNewUrlParser: true, useUnifiedTopolo
 
 const dbConnection = mongoose.connection;
 dbConnection.on('error', err => console.log(`Connection error: ${err}`));
-dbConnection.once('open', () => {
-});
+dbConnection.once('open', () => console.log(`Connect to DB!`));
 app.use('/graphql', graphqlHTTP({
   schema,
   graphiql: true

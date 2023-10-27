@@ -1,5 +1,5 @@
 const  graphql = require('graphql');
-const {GraphQLList} = require("graphql");
+const { GraphQLList, GraphQLInt } = require("graphql");
 
 const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID } = graphql;
 //экземпляры монгус схемы
@@ -47,7 +47,7 @@ const MovieType = new GraphQLObjectType({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
         genre: { type: GraphQLString },
-        director: {
+        directorId: {
             type: DirectorType,
             resolve(parent, args) {
                 //return directors.find(director => director.id === args.id);
@@ -62,7 +62,7 @@ const DirectorType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
-        age: { type: GraphQLString },
+        age: { type: GraphQLInt },
         movies: {
             type: new GraphQLList(MovieType),
             resolve(parent) {
@@ -72,6 +72,44 @@ const DirectorType = new GraphQLObjectType({
         }
     })
 });
+
+const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addDirector: {
+            type: DirectorType,
+            args: {
+                name: {  type: GraphQLString },
+                age: { type: GraphQLInt }
+            },
+            resolve(parent,args) {
+              const director = new Directors({
+                  name: args.name,
+                  age: args.age,
+              });
+              // сохроняем директора в базу с помощью метода  mongoose - save()
+              return director.save();
+            }
+        },
+        addMove: {
+            type: MovieType,
+            args: {
+                name: {  type: GraphQLString },
+                genre: { type: GraphQLString },
+                directorId: {type: GraphQLID},
+            },
+            resolve(parent,args) {
+                const movie = new Movies({
+                    name: args.name,
+                    genre: args.genre,
+                    directorId: args.directorId
+                });
+                // сохроняем директора в базу с помощью метода  mongoose - save()
+                return movie.save();
+            }
+        }
+    }
+})
 
 // создаем и описываем корневой запрос
 const Query = new GraphQLObjectType({
@@ -116,4 +154,5 @@ const Query = new GraphQLObjectType({
 // экспартируем наш корневой запрос
 module.exports = new GraphQLSchema({
     query: Query,
+    mutation: Mutation
 })
