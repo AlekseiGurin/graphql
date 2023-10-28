@@ -107,7 +107,66 @@ const Mutation = new GraphQLObjectType({
                 // сохроняем директора в базу с помощью метода  mongoose - save()
                 return movie.save();
             }
-        }
+        },
+        deleteDirector: {
+            type: DirectorType,
+            args: {id: {type: GraphQLID}},
+            resolve(parent, args) {
+                return Directors.findByIdAndRemove(args.id, (err, docs) => {
+                    if (err){
+                        console.log(err)
+                    }
+                    else{
+                        console.log("Removed Director : ", docs);
+                    }
+                })
+            }
+        },
+        deleteMovie: {
+            type: MovieType,
+            args: {id: {type: GraphQLID}},
+            resolve(parent, args) {
+                return Movies.findByIdAndRemove(args.id, (err, docs) => {
+                    if (err){
+                        console.log(err)
+                    }
+                    else{
+                        console.log("Removed Movie : ", docs);
+                    }
+                })
+            }
+        },
+        updateDirector: {
+            type: DirectorType,
+            args: {
+                id: {type: GraphQLID},
+                name: {type: GraphQLString},
+                age: {type: GraphQLInt}
+            },
+            resolve(parent, args) {
+                return Directors.findByIdAndUpdate(
+                    args.id,
+                    { $set: { name: args.name, age: args.age } },
+                    { new: true }
+                )
+            }
+        },
+        updateMovie: {
+            type: MovieType,
+            args: {
+                id: {type: GraphQLID},
+                name: {type: GraphQLString},
+                genre: {type: GraphQLString},
+                directorId: {type: GraphQLID},
+            },
+            resolve(parent, args) {
+                return Movies.findByIdAndUpdate(
+                    args.id,
+                    { $set: { name: args.name, genre: args.genre, directorId: args.directorId } },
+                    { new: true }
+                )
+            }
+        },
     }
 })
 
