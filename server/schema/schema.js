@@ -173,7 +173,6 @@ const Query = new GraphQLObjectType({
             type: new GraphQLList(MovieType),
             resolve() {
                 //return movies;
-                console.log("")
                 return Movies.find({})
             }
         },
@@ -181,7 +180,7 @@ const Query = new GraphQLObjectType({
             type: new GraphQLList(DirectorType),
             resolve() {
                 ///return directors;
-                return Movies.find({})
+                return Directors.find({})
             }
         }
     }
