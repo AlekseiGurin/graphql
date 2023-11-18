@@ -10,6 +10,7 @@ export const moviesQuery = gql`
        rate
        directorId {
          name
+         id
        }
      }
   }
